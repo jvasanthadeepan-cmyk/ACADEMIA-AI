@@ -28,14 +28,23 @@ export default function TaskCalendarView({ tasks }: TaskCalendarViewProps) {
 
     const getTasksForDay = (day: number | null) => {
         if (!day) return [];
-        const date = new Date(calendarData.year, calendarData.month, day);
-        date.setHours(0, 0, 0, 0);
-        const nextDay = new Date(date);
+        const targetDate = new Date(calendarData.year, calendarData.month, day);
+        targetDate.setHours(0, 0, 0, 0);
+        const nextDay = new Date(targetDate);
         nextDay.setDate(nextDay.getDate() + 1);
 
         return tasks.filter((task) => {
-            const taskTime = Number(task.deadline) / 1_000_000;
-            return taskTime >= date.getTime() && taskTime < nextDay.getTime();
+            const d = task.deadline;
+            if (!d) return false;
+
+            let taskTime: number;
+            if (/^\d+$/.test(d.toString())) {
+                taskTime = Number(d) / 1_000_000;
+            } else {
+                taskTime = new Date(d).getTime();
+            }
+
+            return taskTime >= targetDate.getTime() && taskTime < nextDay.getTime();
         });
     };
 

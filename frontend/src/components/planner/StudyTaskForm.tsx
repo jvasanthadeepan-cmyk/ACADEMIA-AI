@@ -29,7 +29,7 @@ export default function StudyTaskForm({ open, onOpenChange }: StudyTaskFormProps
             await addTask.mutateAsync({
                 subject: formData.subject,
                 topic: formData.topic,
-                deadline: BigInt(deadlineDate.getTime() * 1_000_000),
+                deadline: (BigInt(deadlineDate.getTime()) * BigInt(1_000_000)).toString(),
                 status: TaskStatus.pending,
             });
             toast.success('Task added successfully!');

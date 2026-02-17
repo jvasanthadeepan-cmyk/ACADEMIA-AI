@@ -91,7 +91,17 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
                                     </p>
                                     <p className="text-sm text-muted-foreground">{task.subject}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        Due: {new Date(Number(task.deadline) / 1_000_000).toLocaleDateString()}
+                                        Due: {(() => {
+                                            const d = task.deadline;
+                                            if (!d) return 'No date';
+                                            // Handle nanosecond timestamps (BigInt/string)
+                                            if (/^\d+$/.test(d.toString())) {
+                                                return new Date(Number(d) / 1_000_000).toLocaleDateString();
+                                            }
+                                            // Handle standard date strings (YYYY-MM-DD)
+                                            const date = new Date(d);
+                                            return date.toString() !== 'Invalid Date' ? date.toLocaleDateString() : 'Invalid Date';
+                                        })()}
                                     </p>
                                 </div>
                                 <Button variant="ghost" size="icon" onClick={() => handleDelete(actualIndex)}>
