@@ -1,0 +1,288 @@
+{
+  "kind": "build_request",
+  "title": "Academia AI student dashboard with planner, assistant, roadmap, focus tracker, and settings",
+  "projectName": "Academia AI",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement a cohesive modern SaaS-style UI in dark mode by default with a premium, minimal look (rounded cards, soft shadows, subtle gradient accents, smooth hover/transition effects, clean typography) and ensure full responsiveness including a collapsible mobile sidebar.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Design Style:\nDark mode primary\nClean, minimal, premium UI\nSmooth transitions\nSidebar navigation\nResponsive (mobile + laptop)\nDashboard style like modern SaaS",
+          "UI Requirements\nRounded cards\nSoft shadows\nGradient highlights\nSmooth hover effects\nMobile responsive sidebar collapse\nClean typography"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App loads in dark mode by default.",
+        "Sidebar collapses into a mobile-friendly navigation pattern on small screens.",
+        "Core UI elements (cards, buttons, inputs) consistently use rounded corners, soft shadows, and smooth transitions.",
+        "Do not use a blue/purple primary palette; choose a distinct dark premium palette and apply consistently."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create a public Landing page with: Hero (headline \"Your Personal AI Academic Command Center\", subtext \"Organize. Focus. Win.\"), CTA buttons (\"Get Started\", \"Login\"), Features section listing (Smart Study Planner, AI Study Assistant, Career Roadmap Generator, Focus & Habit Tracker), Pricing section (Free Plan, Pro Plan ₹299/month), and a footer with links (About, Contact, Privacy Policy).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "1️⃣ Landing Page\nSections:\nHero Section\nHeadline: “Your Personal AI Academic Command Center”\nSubtext: Organize. Focus. Win.\nCTA buttons:\nGet Started\nLogin\nFeatures Section\nSmart Study Planner\nAI Study Assistant\nCareer Roadmap Generator\nFocus & Habit Tracker\nPricing Section\nFree Plan\nPro Plan ₹299/month\nFooter\nAbout\nContact\nPrivacy Policy"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Landing page renders all specified sections and exact headline/subtext/labels in English.",
+        "CTA buttons navigate to the appropriate auth flows (Get Started -> Sign up, Login -> Login).",
+        "Pricing shows Free and Pro with Pro price displayed as ₹299/month."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement authentication using Internet Identity and provide Login/Sign up pages that collect and persist the requested profile fields on first sign-in: Full Name, College Name, Course, Year of Study (1–4), Target Career; redirect authenticated users to the dashboard; and protect all app routes under the authenticated area so only logged-in users can access them.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "2️⃣ Authentication Pages\nLogin Page\nFields:\nEmail\nPassword\nLogin button\n“Don’t have account? Sign up”\nSignup Page\nFields:\nFull Name\nEmail\nPassword\nCollege Name\nCourse\nYear of Study (Dropdown: 1,2,3,4)\nTarget Career (Input field)\nOn successful login → redirect to dashboard.",
+          "Protect routes (only logged users access dashboard)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users attempting to access dashboard/modules are redirected to the Login page.",
+        "After successful sign-in, user is redirected to the main Dashboard.",
+        "User profile fields (name, college, course, year, target career) are stored in backend canister state and load on subsequent sessions.",
+        "UI clearly offers navigation between Login and Sign up."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the main authenticated app shell with a Left Sidebar (Dashboard, Study Planner, AI Assistant, Career Roadmap, Focus Tracker, Settings, Logout) and a Top Bar showing user name, a notification icon, and a profile dropdown.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "3️⃣ Main Dashboard Layout\nLayout Structure:\nLeft Sidebar:\nDashboard\nStudy Planner\nAI Assistant\nCareer Roadmap\nFocus Tracker\nSettings\nLogout\nTop Bar:\nUser name\nNotification icon\nProfile dropdown"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sidebar includes all specified nav items and highlights the active route.",
+        "Top bar displays the signed-in user name and shows a notification icon and profile dropdown UI.",
+        "Logout action signs the user out and returns to the public area (landing/login)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement the Dashboard page widgets: Today’s Study Tasks, Focus Score (percentage), Upcoming Exams, Weekly Productivity Graph, and a Quick Ask box for the assistant.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Main Dashboard Page: Show:\nToday’s Study Tasks\nFocus Score (percentage)\nUpcoming Exams\nWeekly Productivity Graph\nQuick AI Ask box"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Today’s Study Tasks lists tasks due today for the signed-in user.",
+        "Focus Score is displayed as a percentage derived from stored focus sessions for the day.",
+        "Weekly Productivity Graph visualizes focus time (or focus score) over the last 7 days.",
+        "Upcoming Exams section is present (can be based on tasks with deadlines and/or a simple exam list if implemented).",
+        "Quick Ask submits a prompt to the assistant feature and shows a response with loading/error states."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement the Study Planner module with the ability to add Subject, add Topic, set Deadline, view tasks in (a) calendar view and (b) task list view, and show a progress bar per subject based on task completion status.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "4️⃣ Study Planner Module\nFeatures:\nAdd Subject\nAdd Topic\nSet Deadline\nUI:\nCalendar view\nTask list view\nProgress bar per subject"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create study tasks with subject, topic, and deadline; tasks are persisted per user.",
+        "Calendar view displays tasks on their deadlines.",
+        "List view supports marking tasks complete/incomplete and filtering by subject.",
+        "Progress per subject updates based on completed vs total tasks."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a \"Syllabus text to plan\" input in Study Planner that generates a structured daily breakdown into study tasks; because external LLM APIs are not supported, implement a deterministic local planner (rule-based chunking) that produces daily tasks from the provided syllabus text and deadline range, and clearly label it as an automated planner.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "When user enters syllabus text → call OpenAI API → generate structured study plan."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can paste syllabus text and choose/confirm a deadline range; app generates a multi-day task plan without calling external AI services.",
+        "Generated tasks are editable and persist to the user’s StudyTasks.",
+        "UI indicates loading/progress during generation and shows an error if input is invalid (e.g., empty syllabus or impossible date range)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Implement the AI Study Assistant page with a chat UI (ChatGPT-like) including prebuilt prompt buttons: Explain in Simple Terms, Make 5-Mark Answer, Create Flashcards, Summarize Notes, Generate MCQs; store chat history per user; and provide a Quick Ask capability consistent with the dashboard widget.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "5️⃣ AI Study Assistant Page\nChat interface like ChatGPT.\nPrebuilt buttons:\nExplain in Simple Terms\nMake 5-Mark Answer\nCreate Flashcards\nSummarize Notes\nGenerate MCQs\nStore chat history in database."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Chat supports sending messages and receiving assistant responses with streaming not required but loading state required.",
+        "Prebuilt buttons insert/compose a prompt template and send it to the assistant.",
+        "Chat history is persisted per user and reloads on refresh.",
+        "Errors are shown non-blockingly and do not break the chat UI."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Enforce plan-based assistant usage limits: Free plan allows 10 assistant queries per day per user; Pro plan is unlimited; show an upgrade popup once the free limit is reached and block additional queries until the next day or until plan is upgraded.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "🔟 Business Logic Rules\nFree plan: 10 AI queries/day\nPro plan: unlimited\nShow upgrade popup after limit"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend tracks daily assistant query counts per user and resets based on date.",
+        "Free users can perform up to 10 assistant queries/day; the 11th attempt triggers an upgrade prompt and is not processed.",
+        "Pro users are not blocked by the quota.",
+        "UI clearly communicates remaining quota for free users (at least on the assistant page)."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Implement the Career Roadmap module with inputs (Degree, Target Job, Timeline) and generate a structured roadmap output (skill roadmap, recommended tools, project suggestions, internship path) rendered as a timeline-style UI; generation must be local/deterministic (no external AI calls).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "6️⃣ Career Roadmap Module\nInputs:\nDegree\nTarget Job\nTimeline\nAI generates:\nSkill roadmap\nRecommended tools\nProject suggestions\nInternship path\nDisplay roadmap in structured timeline UI."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can enter Degree, Target Job, and Timeline and generate a roadmap.",
+        "Roadmap output includes sections for skills, tools, projects, and internships and is displayed in a timeline-like layout.",
+        "Roadmaps are stored per user (or can be regenerated consistently from stored inputs) and reload on refresh."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Implement the Focus Tracker module with: Pomodoro timer (25 minutes), daily focus score, habit streak tracking, weekly productivity chart, and persistence of focus sessions (duration and date) per user.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "7️⃣ Focus Tracker Module\nFeatures:\nPomodoro Timer (25 min)\nDaily Focus Score\nHabit streak tracking\nWeekly productivity chart\nStore session time in database."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Pomodoro timer supports start/pause/reset and records a completed focus session (25 minutes by default) to backend state.",
+        "Daily focus score is computed from today’s completed focus minutes/sessions and displayed as a percentage.",
+        "Habit streak reflects consecutive days with at least one completed focus session.",
+        "Weekly productivity chart shows focus time for the last 7 days from stored sessions."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Implement the Settings page to: edit profile (name, college, course, year, target career), change password (where applicable via identity provider UX), toggle dark/light mode, display subscription status (Free/Pro), and provide logout.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "8️⃣ Settings Page\nEdit profile\nChange password\nDark/light toggle\nSubscription status"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can update profile fields and see changes persist after refresh.",
+        "Dark/light toggle switches theme and persists preference locally (and/or per user).",
+        "Subscription status is displayed as Free or Pro and is used by quota logic.",
+        "Logout is accessible and works reliably."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Implement backend canister data models and CRUD APIs to persist: Users (profile fields + plan), StudyTasks (subject, topic, deadline, status), FocusSessions (duration, date), and ChatHistory (message, response, timestamp), all scoped by the authenticated user principal.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "9️⃣ Database Structure\nTables:\nUsers\nid\nname\nemail\ncollege\ncourse\nyear\ntarget_career\nStudyTasks\nid\nuser_id\nsubject\ntopic\ndeadline\nstatus\nFocusSessions\nid\nuser_id\nduration\ndate\nChatHistory\nid\nuser_id\nmessage\nresponse\ntimestamp"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes typed endpoints to create/read/update/delete study tasks and to append/read chat history and focus sessions.",
+        "All reads/writes are authorized by caller principal; users cannot access others’ data.",
+        "User profile and plan are persisted and retrievable for the authenticated caller."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add production-quality UX states across the app: loading indicators for data fetches, error handling for failed operations, and toast notifications for key actions (save, create task, completed session, quota reached).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Error handling\nLoading states\nToast notifications",
+          "Deployment Ready"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All major async operations show a loading state and handle errors without crashing the page.",
+        "Successful creates/updates show a toast confirmation; failures show an error toast/message.",
+        "Quota reached shows a blocking upgrade modal/popup on assistant interactions."
+      ]
+    }
+  ],
+  "constraints": [
+    "Use the pre-injected React + TypeScript frontend (Tailwind, shadcn/ui composition, React Query) and Motoko single-actor backend; do not introduce Next.js, Supabase, or external databases.",
+    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or anything in frontend/src/components/ui; compose these components instead.",
+    "All backend logic must live in a single Motoko actor (per platform architecture).",
+    "Do not integrate external LLM providers (e.g., OpenAI/Anthropic) or any other unsupported third-party auth; use Internet Identity for authentication."
+  ],
+  "nonGoals": [
+    "Implementing Supabase (DB/Auth) or email/password authentication.",
+    "Calling the OpenAI API or any external AI service; assistant/plan generation must be local/deterministic.",
+    "Real-time messaging, push notifications, email/SMS notifications, or WebSocket-based features.",
+    "Payment processing for upgrades/subscriptions (only display and plan state/quota behavior as specified)."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-16T18:41:59.428Z",
+  "summary": "Diff adds a TanStack Router app structure with dark-mode ThemeProvider, an authenticated app shell (sidebar + topbar), assistant UI (chat composer/thread/prompt chips, quick ask, upgrade modal), study planner UI (task form, list/calendar views, syllabus-to-plan panel, subject progress cards), focus components (Pomodoro timer, weekly mini chart), and a Motoko backend actor with user/task/focus/chat/roadmap data types and some query endpoints. Several BuildRequest requirements are not verifiably implemented from the provided diff summary, especially the full landing/auth pages, dashboard widgets, backend-enforced quota, and several module-specific behaviors.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Public Landing page with exact Hero headline/subtext, CTA buttons routing, Features list, Pricing (₹299/month), and footer links.",
+      "reason": "LandingPage implementation/content is not shown in the diff summary; only routing to LandingPage is evidenced.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Login/Sign up pages using Internet Identity, collecting profile fields on first sign-in, and navigation between Login and Sign up.",
+      "reason": "Routes exist for login/signup and RequireAuth includes a profile-setup form, but the LoginPage/SignupPage implementations and actual Internet Identity sign-in flow UI are not evidenced in the diff summary.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/RequireAuth.tsx"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Dashboard widgets: Today’s Study Tasks (due today), Focus Score percentage derived from today’s focus sessions, Upcoming Exams section, Weekly Productivity Graph, and Quick Ask with loading/error states.",
+      "reason": "QuickAskCard and a weekly mini chart component exist, but the DashboardPage itself and explicit widgets/logic for today’s tasks, focus score %, and upcoming exams are not shown.",
+      "evidence": [
+        "frontend/src/components/assistant/QuickAskCard.tsx",
+        "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Clearly label the syllabus-to-plan feature as an automated planner.",
+      "reason": "SyllabusToPlanPanel provides deterministic generation UX and validation, but the UI copy shown does not explicitly label it as an \"automated planner\" (it says \"we'll create\"), so this specific labeling requirement is not evidenced.",
+      "evidence": [
+        "frontend/src/components/planner/SyllabusToPlanPanel.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "AI Study Assistant page stores chat history per user and reloads on refresh; chat supports send/receive with loading + non-blocking errors; Quick Ask consistent with dashboard widget.",
+      "reason": "Chat UI components and quota hook exist, but persistence/reload behavior depends on backend APIs and hooks not shown (useQueries + backend endpoints). Assistant page implementation is not included in the visible diff.",
+      "evidence": [
+        "frontend/src/components/assistant/ChatComposer.tsx",
+        "frontend/src/components/assistant/ChatThread.tsx",
+        "frontend/src/components/assistant/PromptChips.tsx",
+        "frontend/src/hooks/useAssistantQuota.ts",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Backend-enforced plan-based assistant usage limits (Free 10/day, Pro unlimited) with daily reset; 11th attempt blocked server-side; UI shows remaining quota.",
+      "reason": "UI quota is computed client-side by counting today’s chat messages, and UpgradeModal blocks in UI, but backend tracking/enforcement/reset is not evidenced in the backend diff snippet.",
+      "evidence": [
+        "frontend/src/hooks/useAssistantQuota.ts",
+        "frontend/src/components/assistant/UpgradeModal.tsx",
+        "frontend/src/components/assistant/QuickAskCard.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Career Roadmap module: inputs (Degree/Target Job/Timeline), deterministic local generation, timeline-style UI, persistence and reload.",
+      "reason": "A RoadmapTimeline rendering component exists, and backend types include CareerRoadmap, but generation logic, input form/page behavior, and persistence/reload APIs are not shown in the provided diff summary.",
+      "evidence": [
+        "frontend/src/components/roadmap/RoadmapTimeline.tsx",
+        "backend/main.mo",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Focus Tracker: Pomodoro timer + persistence, daily focus score %, habit streak tracking, weekly productivity chart (last 7 days) from stored sessions.",
+      "reason": "PomodoroTimer and weekly mini chart exist, but habit streak calculation and explicit daily focus score percentage display are not evidenced in the provided diff summary (FocusTrackerPage not shown).",
+      "evidence": [
+        "frontend/src/components/focus/PomodoroTimer.tsx",
+        "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Settings page: edit profile fields with persistence, change password (identity provider UX), dark/light toggle with persisted preference, subscription status display, logout.",
+      "reason": "ThemeProvider defaultTheme is set and LogoutButton exists, but the SettingsPage implementation (profile editing UI, theme toggle UI/persistence, subscription status display, change-password UX) is not shown in the diff summary.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LogoutButton.tsx"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "Backend CRUD APIs for Users, StudyTasks, FocusSessions, ChatHistory, all scoped/authorized by caller principal.",
+      "reason": "Backend/main.mo shows in-memory Maps and some types plus a getDashboardData query and access control checks, but the diff is truncated and does not evidence full typed CRUD endpoints for tasks/focus/chat/users (create/read/update/delete) and per-caller authorization across them.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Admin/secret-token based access control initialization via URL parameter `caffeineAdminToken` and `_initializeAccessControlWithSecret` call in the actor hook.",
+      "reason": "BuildRequest specifies Internet Identity auth and does not mention any secret admin token initialization flow or URL-param-based access control bootstrapping.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Backend authorization mixins/access-control framework usage (MixinAuthorization/AccessControl with permission checks) beyond simple caller-scoped authorization.",
+      "reason": "BuildRequest requires caller-scoped authorization but does not request introducing an access-control system with roles/permissions and secret initialization; this appears additional/unrequested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/assistant/ChatComposer.tsx",
+    "frontend/src/components/assistant/ChatThread.tsx",
+    "frontend/src/components/assistant/PromptChips.tsx",
+    "frontend/src/components/assistant/QuickAskCard.tsx",
+    "frontend/src/components/assistant/UpgradeModal.tsx",
+    "frontend/src/components/auth/LogoutButton.tsx",
+    "frontend/src/components/auth/RequireAuth.tsx",
+    "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+    "frontend/src/components/focus/PomodoroTimer.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/components/planner/StudyTaskForm.tsx",
+    "frontend/src/components/planner/SubjectProgressCards.tsx",
+    "frontend/src/components/planner/SyllabusToPlanPanel.tsx",
+    "frontend/src/components/planner/TaskCalendarView.tsx",
+    "frontend/src/components/planner/TaskListView.tsx",
+    "frontend/src/components/roadmap/RoadmapTimeline.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useAssistantQuota.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useTheme.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/LandingPage.tsx",
+    "frontend/src/pages/app/AiAssistantPage.tsx",
+    "frontend/src/pages/app/CareerRoadmapPage.tsx",
+    "frontend/src/pages/app/DashboardPage.tsx",
+    "frontend/src/pages/app/FocusTrackerPage.tsx",
+    "frontend/src/pages/app/SettingsPage.tsx",
+    "frontend/src/pages/app/StudyPlannerPage.tsx",
+    "frontend/src/pages/auth/LoginPage.tsx",
+    "frontend/src/pages/auth/SignupPage.tsx",
+    "frontend/src/utils/focusMetrics.ts",
+    "frontend/src/utils/localPlanner.ts",
+    "frontend/src/utils/localRoadmapGenerator.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-cohesive-modern-saas-style-ui-in-dark-mode-by-default-with-a-premium-minimal-look-rounded-cards-soft-shadows-subtle-gradient-accents-smooth-hover-transition-effects-clean-typography-and-ensure-full-responsiveness-including-a-collapsible-mobile-sidebar",
+      "featureTitle": "Implement a cohesive modern SaaS-style UI in dark mode by default with a premium, minimal look (rounded cards, soft shadows, subtle gradient accents, smooth hover/transition effects, clean typography) and ensure full responsiveness including a collapsible mobile sidebar.",
+      "files": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-public-landing-page-with-hero-headline-your-personal-ai-academic-command-center-subtext-organize-focus-win-cta-buttons-get-started-login-features-section-listing-smart-study-planner-ai-study-assistant-career-roadmap-generator-focus-habit-tracker-pricing-section-free-plan-pro-plan-299-month-and-a-footer-with-links-about-contact-privacy-policy",
+      "featureTitle": "Create a public Landing page with: Hero (headline \"Your Personal AI Academic Command Center\", subtext \"Organize. Focus. Win.\"), CTA buttons (\"Get Started\", \"Login\"), Features section listing (Smart Study Planner, AI Study Assistant, Career Roadmap Generator, Focus & Habit Tracker), Pricing section (Free Plan, Pro Plan ₹299/month), and a footer with links (About, Contact, Privacy Policy).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-authentication-using-internet-identity-and-provide-login-sign-up-pages-that-collect-and-persist-the-requested-profile-fields-on-first-sign-in-full-name-college-name-course-year-of-study-1-4-target-career-redirect-authenticated-users-to-the-dashboard-and-protect-all-app-routes-under-the-authenticated-area-so-only-logged-in-users-can-access-them",
+      "featureTitle": "Implement authentication using Internet Identity and provide Login/Sign up pages that collect and persist the requested profile fields on first sign-in: Full Name, College Name, Course, Year of Study (1–4), Target Career; redirect authenticated users to the dashboard; and protect all app routes under the authenticated area so only logged-in users can access them.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/RequireAuth.tsx",
+        "frontend/src/pages/auth/LoginPage.tsx",
+        "frontend/src/pages/auth/SignupPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-main-authenticated-app-shell-with-a-left-sidebar-dashboard-study-planner-ai-assistant-career-roadmap-focus-tracker-settings-logout-and-a-top-bar-showing-user-name-a-notification-icon-and-a-profile-dropdown",
+      "featureTitle": "Build the main authenticated app shell with a Left Sidebar (Dashboard, Study Planner, AI Assistant, Career Roadmap, Focus Tracker, Settings, Logout) and a Top Bar showing user name, a notification icon, and a profile dropdown.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LogoutButton.tsx",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-dashboard-page-widgets-today-s-study-tasks-focus-score-percentage-upcoming-exams-weekly-productivity-graph-and-a-quick-ask-box-for-the-assistant",
+      "featureTitle": "Implement the Dashboard page widgets: Today’s Study Tasks, Focus Score (percentage), Upcoming Exams, Weekly Productivity Graph, and a Quick Ask box for the assistant.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/assistant/QuickAskCard.tsx",
+        "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+        "frontend/src/pages/app/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-study-planner-module-with-the-ability-to-add-subject-add-topic-set-deadline-view-tasks-in-a-calendar-view-and-b-task-list-view-and-show-a-progress-bar-per-subject-based-on-task-completion-status",
+      "featureTitle": "Implement the Study Planner module with the ability to add Subject, add Topic, set Deadline, view tasks in (a) calendar view and (b) task list view, and show a progress bar per subject based on task completion status.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/planner/StudyTaskForm.tsx",
+        "frontend/src/components/planner/SubjectProgressCards.tsx",
+        "frontend/src/components/planner/TaskCalendarView.tsx",
+        "frontend/src/components/planner/TaskListView.tsx",
+        "frontend/src/pages/app/StudyPlannerPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-syllabus-text-to-plan-input-in-study-planner-that-generates-a-structured-daily-breakdown-into-study-tasks-because-external-llm-apis-are-not-supported-implement-a-deterministic-local-planner-rule-based-chunking-that-produces-daily-tasks-from-the-provided-syllabus-text-and-deadline-range-and-clearly-label-it-as-an-automated-planner",
+      "featureTitle": "Add a \"Syllabus text to plan\" input in Study Planner that generates a structured daily breakdown into study tasks; because external LLM APIs are not supported, implement a deterministic local planner (rule-based chunking) that produces daily tasks from the provided syllabus text and deadline range, and clearly label it as an automated planner.",
+      "files": [
+        "frontend/src/components/planner/SyllabusToPlanPanel.tsx",
+        "frontend/src/pages/app/StudyPlannerPage.tsx",
+        "frontend/src/utils/localPlanner.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-ai-study-assistant-page-with-a-chat-ui-chatgpt-like-including-prebuilt-prompt-buttons-explain-in-simple-terms-make-5-mark-answer-create-flashcards-summarize-notes-generate-mcqs-store-chat-history-per-user-and-provide-a-quick-ask-capability-consistent-with-the-dashboard-widget",
+      "featureTitle": "Implement the AI Study Assistant page with a chat UI (ChatGPT-like) including prebuilt prompt buttons: Explain in Simple Terms, Make 5-Mark Answer, Create Flashcards, Summarize Notes, Generate MCQs; store chat history per user; and provide a Quick Ask capability consistent with the dashboard widget.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/assistant/ChatComposer.tsx",
+        "frontend/src/components/assistant/ChatThread.tsx",
+        "frontend/src/components/assistant/PromptChips.tsx",
+        "frontend/src/pages/app/AiAssistantPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-enforce-plan-based-assistant-usage-limits-free-plan-allows-10-assistant-queries-per-day-per-user-pro-plan-is-unlimited-show-an-upgrade-popup-once-the-free-limit-is-reached-and-block-additional-queries-until-the-next-day-or-until-plan-is-upgraded",
+      "featureTitle": "Enforce plan-based assistant usage limits: Free plan allows 10 assistant queries per day per user; Pro plan is unlimited; show an upgrade popup once the free limit is reached and block additional queries until the next day or until plan is upgraded.",
+      "files": [
+        "frontend/src/components/assistant/QuickAskCard.tsx",
+        "frontend/src/components/assistant/UpgradeModal.tsx",
+        "frontend/src/hooks/useAssistantQuota.ts",
+        "frontend/src/pages/app/AiAssistantPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-career-roadmap-module-with-inputs-degree-target-job-timeline-and-generate-a-structured-roadmap-output-skill-roadmap-recommended-tools-project-suggestions-internship-path-rendered-as-a-timeline-style-ui-generation-must-be-local-deterministic-no-external-ai-calls",
+      "featureTitle": "Implement the Career Roadmap module with inputs (Degree, Target Job, Timeline) and generate a structured roadmap output (skill roadmap, recommended tools, project suggestions, internship path) rendered as a timeline-style UI; generation must be local/deterministic (no external AI calls).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/roadmap/RoadmapTimeline.tsx",
+        "frontend/src/pages/app/CareerRoadmapPage.tsx",
+        "frontend/src/utils/localRoadmapGenerator.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-focus-tracker-module-with-pomodoro-timer-25-minutes-daily-focus-score-habit-streak-tracking-weekly-productivity-chart-and-persistence-of-focus-sessions-duration-and-date-per-user",
+      "featureTitle": "Implement the Focus Tracker module with: Pomodoro timer (25 minutes), daily focus score, habit streak tracking, weekly productivity chart, and persistence of focus sessions (duration and date) per user.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+        "frontend/src/components/focus/PomodoroTimer.tsx",
+        "frontend/src/pages/app/FocusTrackerPage.tsx",
+        "frontend/src/utils/focusMetrics.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-settings-page-to-edit-profile-name-college-course-year-target-career-change-password-where-applicable-via-identity-provider-ux-toggle-dark-light-mode-display-subscription-status-free-pro-and-provide-logout",
+      "featureTitle": "Implement the Settings page to: edit profile (name, college, course, year, target career), change password (where applicable via identity provider UX), toggle dark/light mode, display subscription status (Free/Pro), and provide logout.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/hooks/useTheme.ts",
+        "frontend/src/pages/app/SettingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-production-quality-ux-states-across-the-app-loading-indicators-for-data-fetches-error-handling-for-failed-operations-and-toast-notifications-for-key-actions-save-create-task-completed-session-quota-reached",
+      "featureTitle": "Add production-quality UX states across the app: loading indicators for data fetches, error handling for failed operations, and toast notifications for key actions (save, create task, completed session, quota reached).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/app/AiAssistantPage.tsx",
+        "frontend/src/pages/app/DashboardPage.tsx",
+        "frontend/src/pages/app/FocusTrackerPage.tsx",
+        "frontend/src/pages/app/StudyPlannerPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

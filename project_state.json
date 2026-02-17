@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build “ACADEMIA AI – Student Academic Command Center”: a modern dark-mode SaaS-style full-stack Next.js (App Router) + TypeScript web app using Tailwind, Supabase (DB + Auth), and OpenAI API, including landing, auth, dashboard, study planner, AI assistant, career roadmap, focus tracker, settings, and free/pro AI-usage limits.",
+  "architectural_notes": [
+    "Tech stack: Next.js (App Router) + TypeScript frontend and Next.js API routes backend",
+    "Styling: Tailwind CSS with dark mode default; modern SaaS dashboard UI with sidebar + responsive collapse",
+    "Backend services: Supabase for Postgres database and Supabase Auth (email/password)",
+    "AI integration: OpenAI API used for study plan generation, study assistant chat, and career roadmap generation",
+    "Plan limits: Free plan limited to 10 AI queries/day; Pro plan unlimited; enforce with upgrade prompt",
+    "Deployment readiness: env vars for API keys, production optimizations, error handling, loading states, toast notifications"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-a-cohesive-modern-saas-style-ui-in-dark-mode-by-default-with-a-premium-minimal-look-rounded-cards-soft-shadows-subtle-gradient-accents-smooth-hover-transition-effects-clean-typography-and-ensure-full-responsiveness-including-a-collapsible-mobile-sidebar",
+      "title": "Implement a cohesive modern SaaS-style UI in dark mode by default with a premium, minimal look (rounded cards, soft shadows, subtle gradient accents, smooth hover/transition effects, clean typography) and ensure full responsiveness including a collapsible mobile sidebar.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-public-landing-page-with-hero-headline-your-personal-ai-academic-command-center-subtext-organize-focus-win-cta-buttons-get-started-login-features-section-listing-smart-study-planner-ai-study-assistant-career-roadmap-generator-focus-habit-tracker-pricing-section-free-plan-pro-plan-299-month-and-a-footer-with-links-about-contact-privacy-policy",
+      "title": "Create a public Landing page with: Hero (headline \"Your Personal AI Academic Command Center\", subtext \"Organize. Focus. Win.\"), CTA buttons (\"Get Started\", \"Login\"), Features section listing (Smart Study Planner, AI Study Assistant, Career Roadmap Generator, Focus & Habit Tracker), Pricing section (Free Plan, Pro Plan ₹299/month), and a footer with links (About, Contact, Privacy Policy).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-authentication-using-internet-identity-and-provide-login-sign-up-pages-that-collect-and-persist-the-requested-profile-fields-on-first-sign-in-full-name-college-name-course-year-of-study-1-4-target-career-redirect-authenticated-users-to-the-dashboard-and-protect-all-app-routes-under-the-authenticated-area-so-only-logged-in-users-can-access-them",
+      "title": "Implement authentication using Internet Identity and provide Login/Sign up pages that collect and persist the requested profile fields on first sign-in: Full Name, College Name, Course, Year of Study (1–4), Target Career; redirect authenticated users to the dashboard; and protect all app routes under the authenticated area so only logged-in users can access them.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-main-authenticated-app-shell-with-a-left-sidebar-dashboard-study-planner-ai-assistant-career-roadmap-focus-tracker-settings-logout-and-a-top-bar-showing-user-name-a-notification-icon-and-a-profile-dropdown",
+      "title": "Build the main authenticated app shell with a Left Sidebar (Dashboard, Study Planner, AI Assistant, Career Roadmap, Focus Tracker, Settings, Logout) and a Top Bar showing user name, a notification icon, and a profile dropdown.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-dashboard-page-widgets-today-s-study-tasks-focus-score-percentage-upcoming-exams-weekly-productivity-graph-and-a-quick-ask-box-for-the-assistant",
+      "title": "Implement the Dashboard page widgets: Today’s Study Tasks, Focus Score (percentage), Upcoming Exams, Weekly Productivity Graph, and a Quick Ask box for the assistant.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-study-planner-module-with-the-ability-to-add-subject-add-topic-set-deadline-view-tasks-in-a-calendar-view-and-b-task-list-view-and-show-a-progress-bar-per-subject-based-on-task-completion-status",
+      "title": "Implement the Study Planner module with the ability to add Subject, add Topic, set Deadline, view tasks in (a) calendar view and (b) task list view, and show a progress bar per subject based on task completion status.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-syllabus-text-to-plan-input-in-study-planner-that-generates-a-structured-daily-breakdown-into-study-tasks-because-external-llm-apis-are-not-supported-implement-a-deterministic-local-planner-rule-based-chunking-that-produces-daily-tasks-from-the-provided-syllabus-text-and-deadline-range-and-clearly-label-it-as-an-automated-planner",
+      "title": "Add a \"Syllabus text to plan\" input in Study Planner that generates a structured daily breakdown into study tasks; because external LLM APIs are not supported, implement a deterministic local planner (rule-based chunking) that produces daily tasks from the provided syllabus text and deadline range, and clearly label it as an automated planner.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-ai-study-assistant-page-with-a-chat-ui-chatgpt-like-including-prebuilt-prompt-buttons-explain-in-simple-terms-make-5-mark-answer-create-flashcards-summarize-notes-generate-mcqs-store-chat-history-per-user-and-provide-a-quick-ask-capability-consistent-with-the-dashboard-widget",
+      "title": "Implement the AI Study Assistant page with a chat UI (ChatGPT-like) including prebuilt prompt buttons: Explain in Simple Terms, Make 5-Mark Answer, Create Flashcards, Summarize Notes, Generate MCQs; store chat history per user; and provide a Quick Ask capability consistent with the dashboard widget.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enforce-plan-based-assistant-usage-limits-free-plan-allows-10-assistant-queries-per-day-per-user-pro-plan-is-unlimited-show-an-upgrade-popup-once-the-free-limit-is-reached-and-block-additional-queries-until-the-next-day-or-until-plan-is-upgraded",
+      "title": "Enforce plan-based assistant usage limits: Free plan allows 10 assistant queries per day per user; Pro plan is unlimited; show an upgrade popup once the free limit is reached and block additional queries until the next day or until plan is upgraded.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-career-roadmap-module-with-inputs-degree-target-job-timeline-and-generate-a-structured-roadmap-output-skill-roadmap-recommended-tools-project-suggestions-internship-path-rendered-as-a-timeline-style-ui-generation-must-be-local-deterministic-no-external-ai-calls",
+      "title": "Implement the Career Roadmap module with inputs (Degree, Target Job, Timeline) and generate a structured roadmap output (skill roadmap, recommended tools, project suggestions, internship path) rendered as a timeline-style UI; generation must be local/deterministic (no external AI calls).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-focus-tracker-module-with-pomodoro-timer-25-minutes-daily-focus-score-habit-streak-tracking-weekly-productivity-chart-and-persistence-of-focus-sessions-duration-and-date-per-user",
+      "title": "Implement the Focus Tracker module with: Pomodoro timer (25 minutes), daily focus score, habit streak tracking, weekly productivity chart, and persistence of focus sessions (duration and date) per user.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-settings-page-to-edit-profile-name-college-course-year-target-career-change-password-where-applicable-via-identity-provider-ux-toggle-dark-light-mode-display-subscription-status-free-pro-and-provide-logout",
+      "title": "Implement the Settings page to: edit profile (name, college, course, year, target career), change password (where applicable via identity provider UX), toggle dark/light mode, display subscription status (Free/Pro), and provide logout.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-production-quality-ux-states-across-the-app-loading-indicators-for-data-fetches-error-handling-for-failed-operations-and-toast-notifications-for-key-actions-save-create-task-completed-session-quota-reached",
+      "title": "Add production-quality UX states across the app: loading indicators for data fetches, error handling for failed operations, and toast notifications for key actions (save, create task, completed session, quota reached).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Landing page with hero, CTA (Get Started/Login), features list, pricing (Free/Pro ₹299/mo), and footer links (About/Contact/Privacy)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Authentication flows using Supabase Auth (email/password): login + signup with profile fields and redirect to dashboard",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Main dashboard layout (sidebar + top bar) and dashboard widgets (tasks, focus score, upcoming exams, weekly graph, quick AI ask)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Study Planner module: subjects/topics/deadlines, calendar & list views, progress per subject, and AI-generated daily task breakdown from syllabus text",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "AI Study Assistant chat page with prebuilt prompt buttons, chat history storage, and free-plan daily query limits",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Career Roadmap module: inputs (degree/target job/timeline) and AI-generated structured timeline roadmap outputs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Focus Tracker module: Pomodoro timer, daily focus score, habit streaks, weekly productivity chart, and session storage",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Settings page: edit profile, change password, dark/light toggle, subscription status, and logout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Business logic & UX: route protection for authenticated areas, AI quota enforcement (Free 10/day, Pro unlimited) with upgrade popup, plus loading/error/toast states",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Supabase database schema setup for Users, StudyTasks, FocusSessions, and ChatHistory",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Implement backend canister data models and CRUD APIs to persist: Users (profile fields + plan), StudyTasks (subject, topic, deadline, status), FocusSessions (duration, date), and ChatHistory (message, response, timestamp), all scoped by the authenticated user principal.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "ACADEMIA AI – Student Academic Command Center",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,449 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Academia AI — Frontend dashboard (landing, auth, modules, SaaS dark UI)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Apply a cohesive premium dark-mode SaaS UI system with responsive layout and collapsible mobile sidebar.",
+      "acceptanceCriteria": [
+        "App loads in dark mode by default.",
+        "Sidebar collapses into a mobile-friendly navigation pattern on small screens.",
+        "Core UI elements (cards, buttons, inputs) consistently use rounded corners, soft shadows, and smooth transitions.",
+        "Do not use a blue/purple primary palette; choose a distinct dark premium palette and apply consistently."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global Tailwind/shadcn-compatible CSS variables for a distinct premium dark palette (non-blue/purple primary), rounded radii, shadows, and base typography; set dark mode as the default theme at the CSS variable level."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust theme extensions (shadow, radii, and optional accent colors via CSS variables) to support the premium minimal style and consistent hover/transition utilities across the app."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Implement the responsive authenticated layout wrapper (shell) styling hooks: rounded cards, soft shadows, subtle gradient accents, and smooth transitions; include layout regions for sidebar/topbar/content, with mobile collapse behavior."
+        },
+        {
+          "path": "frontend/src/components/layout/MobileSidebarSheet.tsx",
+          "operation": "create",
+          "description": "Create a mobile sidebar pattern (e.g., sheet/drawer) for small screens and wire it to the layout; compose shadcn/ui primitives for sheet/dialog as available (do not edit frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Create the public Landing page with specified hero, CTAs, features, pricing, and footer links.",
+      "acceptanceCriteria": [
+        "Landing page renders all specified sections and exact headline/subtext/labels in English.",
+        "CTA buttons navigate to the appropriate auth flows (Get Started -> Sign up, Login -> Login).",
+        "Pricing shows Free and Pro with Pro price displayed as ₹299/month."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "create",
+          "description": "Build the public Landing page UI with the exact required hero headline/subtext, CTA labels, Features list, Pricing cards (Free and Pro ₹299/month), and footer links (About/Contact/Privacy Policy). Use shadcn/ui composable components (buttons/cards) where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Add routing for the public Landing page and wire navigation targets for Get Started -> /auth/signup and Login -> /auth/login."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement Internet Identity authentication UX (login/signup) with first-time profile setup, route protection, and post-auth redirects.",
+      "acceptanceCriteria": [
+        "Unauthenticated users attempting to access dashboard/modules are redirected to the Login page.",
+        "After successful sign-in, user is redirected to the main Dashboard.",
+        "User profile fields (name, college, course, year, target career) are stored in backend canister state and load on subsequent sessions.",
+        "UI clearly offers navigation between Login and Sign up."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/auth/LoginPage.tsx",
+          "operation": "create",
+          "description": "Create a Login page that uses the existing Internet Identity hook to sign in (no email/password auth). Provide clear navigation to Sign up. Use the selected authorization component guidance for Internet Identity + profile setup flow. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/SignupPage.tsx",
+          "operation": "create",
+          "description": "Create a Sign up page that triggers Internet Identity login and then collects the required profile fields (Full Name, College Name, Course, Year of Study 1–4, Target Career) on first sign-in only; persist via backend getCallerUserProfile/saveCallerUserProfile. Use the selected authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/RequireAuth.tsx",
+          "operation": "create",
+          "description": "Add a route guard that checks Internet Identity authentication state and redirects unauthenticated users to /auth/login; once authenticated, also ensure user profile is present (prompt/setup if missing) before allowing access to app routes. Use the selected authorization component guidance (including avoiding profile setup modal flash). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUserProfile.ts",
+          "operation": "create",
+          "description": "Create a React Query hook to fetch/save the caller user profile using the actor (getCallerUserProfile/saveCallerUserProfile) and expose loading/fetched flags to prevent profile setup flash, following the selected authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire routes for /auth/login and /auth/signup, and protect authenticated routes (dashboard/modules) using RequireAuth; implement post-login redirect to the main Dashboard route."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build the authenticated app shell with left sidebar navigation, top bar (user name, notification icon, profile dropdown), and logout.",
+      "acceptanceCriteria": [
+        "Sidebar includes all specified nav items and highlights the active route.",
+        "Top bar displays the signed-in user name and shows a notification icon and profile dropdown UI.",
+        "Logout action signs the user out and returns to the public area (landing/login)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/layout/SidebarNav.tsx",
+          "operation": "create",
+          "description": "Implement the left sidebar with nav items (Dashboard, Study Planner, AI Assistant, Career Roadmap, Focus Tracker, Settings, Logout), active-route highlighting, and responsive collapse behavior; compose shadcn/ui primitives for buttons/menus where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/TopBar.tsx",
+          "operation": "create",
+          "description": "Implement the top bar showing the signed-in user's name (from profile), a notification icon UI, and a profile dropdown (including Logout action); compose shadcn/ui dropdown/menu components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LogoutButton.tsx",
+          "operation": "create",
+          "description": "Create a logout action that calls Internet Identity clear() and clears React Query cache; follow the selected authorization component guidance for clearing cached app/profile data on logout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Wire SidebarNav and TopBar into the authenticated shell, including mobile sidebar trigger (e.g., via MobileSidebarSheet) and content outlet."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Nest authenticated routes under the AppLayout shell so all modules share sidebar/topbar and logout behavior."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement the Dashboard page widgets (today tasks, focus score, upcoming exams, weekly graph, quick ask).",
+      "acceptanceCriteria": [
+        "Today’s Study Tasks lists tasks due today for the signed-in user.",
+        "Focus Score is displayed as a percentage derived from stored focus sessions for the day.",
+        "Weekly Productivity Graph visualizes focus time (or focus score) over the last 7 days.",
+        "Upcoming Exams section is present (can be based on tasks with deadlines and/or a simple exam list if implemented).",
+        "Quick Ask submits a prompt to the assistant feature and shows a response with loading/error states."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/app/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Build the Dashboard widgets UI and data wiring using React Query + actor calls (e.g., getDashboardData/getStudyTasks/getFocusSessions as needed); include Today’s Study Tasks, Focus Score %, Upcoming Exams, Weekly Productivity Graph, and a Quick Ask box with loading/error states. Use shadcn/ui card/input/button components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+          "operation": "create",
+          "description": "Create a lightweight chart component (SVG/div-based) to visualize last 7 days productivity for Dashboard and Focus Tracker without adding new heavy dependencies."
+        },
+        {
+          "path": "frontend/src/components/assistant/QuickAskCard.tsx",
+          "operation": "create",
+          "description": "Create a reusable Quick Ask UI used on Dashboard and consistent with the assistant page; integrates with assistant send flow and shows loading/error/success response. Use shadcn/ui form components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated Dashboard route and ensure it is the default post-auth landing route."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement Study Planner with add task, calendar/list views, completion toggles, subject filtering, and per-subject progress.",
+      "acceptanceCriteria": [
+        "User can create study tasks with subject, topic, and deadline; tasks are persisted per user.",
+        "Calendar view displays tasks on their deadlines.",
+        "List view supports marking tasks complete/incomplete and filtering by subject.",
+        "Progress per subject updates based on completed vs total tasks."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/app/StudyPlannerPage.tsx",
+          "operation": "create",
+          "description": "Implement Study Planner page with task creation (subject/topic/deadline), list view + calendar view toggle, completion toggle, and subject filter; fetch/persist via actor calls (getStudyTasks/addStudyTask/updateStudyTask/deleteStudyTask) with React Query invalidation. Use shadcn/ui form and card components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/planner/StudyTaskForm.tsx",
+          "operation": "create",
+          "description": "Create a reusable form for creating/editing a study task (subject/topic/deadline/status) with validation and consistent UI styling. Use shadcn/ui input/select/date UI primitives where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/planner/TaskListView.tsx",
+          "operation": "create",
+          "description": "Create list view for tasks with subject filtering, completion toggle, and actions; ensure responsive layout and empty/loading/error states. Use shadcn/ui components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/planner/TaskCalendarView.tsx",
+          "operation": "create",
+          "description": "Create a simple calendar view that places tasks on their deadline dates (month/week basic rendering is sufficient) and supports responsive interaction."
+        },
+        {
+          "path": "frontend/src/components/planner/SubjectProgressCards.tsx",
+          "operation": "create",
+          "description": "Create per-subject progress visualization based on completed/total tasks and render as progress bars; compose shadcn/ui progress components where available. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated Study Planner route and wire it into navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add deterministic local “Syllabus text to plan” generation in Study Planner with editable persisted tasks.",
+      "acceptanceCriteria": [
+        "User can paste syllabus text and choose/confirm a deadline range; app generates a multi-day task plan without calling external AI services.",
+        "Generated tasks are editable and persist to the user’s StudyTasks.",
+        "UI indicates loading/progress during generation and shows an error if input is invalid (e.g., empty syllabus or impossible date range)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/localPlanner.ts",
+          "operation": "create",
+          "description": "Implement deterministic rule-based chunking that converts syllabus text + date range into a daily breakdown and task list (no external AI calls); include validation for empty input and invalid/impossible date ranges."
+        },
+        {
+          "path": "frontend/src/components/planner/SyllabusToPlanPanel.tsx",
+          "operation": "create",
+          "description": "Add a Study Planner sub-panel for syllabus text input + date range selection, clearly labeled as an automated planner; show generation loading/progress and validation errors; allow generated tasks to be reviewed/edited before saving. Use shadcn/ui form components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/app/StudyPlannerPage.tsx",
+          "operation": "modify",
+          "description": "Wire SyllabusToPlanPanel into the Study Planner page and connect generated tasks to the existing create/edit persistence flow."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Implement AI Study Assistant page with chat UI, prompt buttons, per-user history, and consistent Quick Ask behavior.",
+      "acceptanceCriteria": [
+        "Chat supports sending messages and receiving assistant responses with streaming not required but loading state required.",
+        "Prebuilt buttons insert/compose a prompt template and send it to the assistant.",
+        "Chat history is persisted per user and reloads on refresh.",
+        "Errors are shown non-blockingly and do not break the chat UI."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/app/AiAssistantPage.tsx",
+          "operation": "create",
+          "description": "Build a ChatGPT-like assistant page UI with message list, composer, loading/error states, and prebuilt prompt buttons (Explain in Simple Terms, Make 5-Mark Answer, Create Flashcards, Summarize Notes, Generate MCQs); load/persist history with actor calls (getChatHistory/addChatMessage). Use shadcn/ui components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/assistant/PromptChips.tsx",
+          "operation": "create",
+          "description": "Create the prebuilt prompt buttons component that inserts/creates prompt templates and triggers sending through the assistant chat flow. Use shadcn/ui button components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/assistant/ChatThread.tsx",
+          "operation": "create",
+          "description": "Create a chat thread UI component rendering user/assistant messages with timestamps and resilient error rendering (non-blocking)."
+        },
+        {
+          "path": "frontend/src/components/assistant/ChatComposer.tsx",
+          "operation": "create",
+          "description": "Create a chat composer component with input, send button, disabled/loading state, and keyboard submit behavior; share logic with Dashboard Quick Ask where applicable. Use shadcn/ui input/button components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated AI Assistant route and wire it into navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Enforce plan-based assistant query limits in UI with upgrade modal and quota messaging (Free=10/day, Pro=unlimited).",
+      "acceptanceCriteria": [
+        "Backend tracks daily assistant query counts per user and resets based on date.",
+        "Free users can perform up to 10 assistant queries/day; the 11th attempt triggers an upgrade prompt and is not processed.",
+        "Pro users are not blocked by the quota.",
+        "UI clearly communicates remaining quota for free users (at least on the assistant page)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useAssistantQuota.ts",
+          "operation": "create",
+          "description": "Implement quota UI logic hook that determines remaining queries for today based on user plan (from profile) and today’s chat history timestamps; block sends when limit reached for free users and expose state for assistant/quick ask UIs."
+        },
+        {
+          "path": "frontend/src/components/assistant/UpgradeModal.tsx",
+          "operation": "create",
+          "description": "Create a blocking upgrade popup/modal shown when free quota is exhausted; include messaging and an action to trigger upgrade via actor.upgradeToPro(), then refresh profile state. Compose shadcn/ui dialog/modal primitives where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/app/AiAssistantPage.tsx",
+          "operation": "modify",
+          "description": "Show remaining quota for free users, integrate quota blocking into message sending, and display UpgradeModal when limit reached; ensure blocked sends do not call the backend capability."
+        },
+        {
+          "path": "frontend/src/components/assistant/QuickAskCard.tsx",
+          "operation": "modify",
+          "description": "Apply the same quota gating and upgrade modal trigger behavior for Dashboard Quick Ask to keep it consistent with the assistant page."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement Career Roadmap module with deterministic generation and timeline-style rendering with persistence.",
+      "acceptanceCriteria": [
+        "User can enter Degree, Target Job, and Timeline and generate a roadmap.",
+        "Roadmap output includes sections for skills, tools, projects, and internships and is displayed in a timeline-like layout.",
+        "Roadmaps are stored per user (or can be regenerated consistently from stored inputs) and reload on refresh."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/localRoadmapGenerator.ts",
+          "operation": "create",
+          "description": "Implement a deterministic roadmap generator that produces skills/tools/projects/internship path sections from Degree/Target Job/Timeline inputs (no external AI calls)."
+        },
+        {
+          "path": "frontend/src/pages/app/CareerRoadmapPage.tsx",
+          "operation": "create",
+          "description": "Build the Career Roadmap page with input form (Degree, Target Job, Timeline), generate action, timeline-style UI output rendering, and persistence via actor.getCareerRoadmap/saveCareerRoadmap with React Query caching. Use shadcn/ui form/card components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/roadmap/RoadmapTimeline.tsx",
+          "operation": "create",
+          "description": "Create a timeline-style renderer for roadmap sections (skills/tools/projects/internships) with a premium minimal visual style and responsive layout."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated Career Roadmap route and wire it into navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Implement Focus Tracker with pomodoro, daily score, streak, weekly chart, and persisted sessions per user.",
+      "acceptanceCriteria": [
+        "Pomodoro timer supports start/pause/reset and records a completed focus session (25 minutes by default) to backend state.",
+        "Daily focus score is computed from today’s completed focus minutes/sessions and displayed as a percentage.",
+        "Habit streak reflects consecutive days with at least one completed focus session.",
+        "Weekly productivity chart shows focus time for the last 7 days from stored sessions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/app/FocusTrackerPage.tsx",
+          "operation": "create",
+          "description": "Build Focus Tracker page that loads focus sessions via actor.getFocusSessions, displays daily focus score %, streak, and a weekly productivity chart; record new completed pomodoro sessions via actor.addFocusSession with loading/error/toast states. Use shadcn/ui components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/focus/PomodoroTimer.tsx",
+          "operation": "create",
+          "description": "Create a 25-minute pomodoro timer component with start/pause/reset; on completion, trigger persistence of a focus session and UI feedback states."
+        },
+        {
+          "path": "frontend/src/utils/focusMetrics.ts",
+          "operation": "create",
+          "description": "Implement client-side helpers to compute daily focus score percentage, weekly aggregates, and habit streak from persisted focus sessions."
+        },
+        {
+          "path": "frontend/src/components/charts/WeeklyProductivityMiniChart.tsx",
+          "operation": "modify",
+          "description": "Extend the existing mini chart component (if needed) to support Focus Tracker weekly focus time visualization consistently with Dashboard."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated Focus Tracker route and wire it into navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Implement Settings: edit profile, theme toggle, subscription status, and logout (password change via identity-provider UX guidance).",
+      "acceptanceCriteria": [
+        "User can update profile fields and see changes persist after refresh.",
+        "Dark/light toggle switches theme and persists preference locally (and/or per user).",
+        "Subscription status is displayed as Free or Pro and is used by quota logic.",
+        "Logout is accessible and works reliably."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/app/SettingsPage.tsx",
+          "operation": "create",
+          "description": "Build Settings page with editable profile fields (name/college/course/year/target career) persisted via saveCallerUserProfile, theme toggle with local persistence, subscription status display (Free/Pro from profile), and logout access. Include guidance/links for changing password via the Internet Identity provider UX (where applicable). Use shadcn/ui components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useTheme.ts",
+          "operation": "create",
+          "description": "Implement theme management (dark default, toggle dark/light) storing preference in localStorage and applying the correct class to the root element to drive Tailwind darkMode."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Wire theme application and ensure authenticated shell respects dark/light modes while defaulting to dark on first load."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the authenticated Settings route and wire it into navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add production-quality UX states: loading, error handling, and toast notifications (including quota reached modal).",
+      "acceptanceCriteria": [
+        "All major async operations show a loading state and handle errors without crashing the page.",
+        "Successful creates/updates show a toast confirmation; failures show an error toast/message.",
+        "Quota reached shows a blocking upgrade modal/popup on assistant interactions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/feedback/AppToaster.tsx",
+          "operation": "create",
+          "description": "Add a global toaster host component composed from existing shadcn/ui toast primitives (without editing frontend/src/components/ui) and make it available app-wide. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useToast.ts",
+          "operation": "create",
+          "description": "Create a small wrapper hook/util to trigger consistent success/error toasts for key actions (save profile, create/update task, completed focus session, assistant errors, quota reached messaging)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Mount the global AppToaster once, and ensure route-level pages use consistent loading/error UI patterns (React Query states) and toast notifications for key actions."
+        },
+        {
+          "path": "frontend/src/pages/app/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Add explicit loading skeleton/placeholder, error presentation, and toast triggers for key dashboard interactions (e.g., Quick Ask failures)."
+        },
+        {
+          "path": "frontend/src/pages/app/StudyPlannerPage.tsx",
+          "operation": "modify",
+          "description": "Add loading/error states for task fetch/mutations and toast notifications for create/update/delete/complete actions."
+        },
+        {
+          "path": "frontend/src/pages/app/FocusTrackerPage.tsx",
+          "operation": "modify",
+          "description": "Add loading/error states for sessions and toast notifications for recording completed sessions."
+        },
+        {
+          "path": "frontend/src/pages/app/AiAssistantPage.tsx",
+          "operation": "modify",
+          "description": "Add resilient non-blocking error display for assistant calls plus toast notifications where appropriate; ensure UpgradeModal remains the blocking UI for quota reached."
+        }
+      ]
+    }
+  ]
+}
