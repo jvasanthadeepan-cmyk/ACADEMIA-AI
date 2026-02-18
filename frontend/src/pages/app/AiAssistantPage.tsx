@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 import { useGetChatHistory, useAddChatMessage, useClearChatHistory } from '../../hooks/useQueries';
 import { useAssistantQuota } from '../../hooks/useAssistantQuota';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -77,6 +78,29 @@ export default function AiAssistantPage() {
         setInput(prompt);
     };
 
+    const [isListening, setIsListening] = useState(false);
+
+    const startListening = () => {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            toast.error('Speech recognition not supported in this browser');
+            return;
+        }
+
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onstart = () => setIsListening(true);
+        recognition.onend = () => setIsListening(false);
+        recognition.onresult = (event: any) => {
+            const transcript = event.results[0][0].transcript;
+            setInput(prev => prev + ' ' + transcript);
+        };
+
+        recognition.start();
+    };
+
     return (
         <div className="space-y-6 animate-fade-in max-w-5xl mx-auto h-[calc(100vh-120px)] flex flex-col">
             <div className="flex justify-between items-center">
@@ -84,8 +108,9 @@ export default function AiAssistantPage() {
                     <h1 className="text-3xl font-bold flex items-center gap-2">
                         <MessageSquare className="w-8 h-8 text-primary" />
                         AI Study Assistant
+                        <span className="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded-full animate-pulse">Live</span>
                     </h1>
-                    <p className="text-muted-foreground">Detailed ChatGPT-style academic support</p>
+                    <p className="text-muted-foreground">Neuro-sync study support</p>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="text-right">
@@ -112,11 +137,11 @@ export default function AiAssistantPage() {
                 </div>
             </div>
 
-            <Card className="flex-1 flex flex-col min-h-0 border-border/50 shadow-soft-lg overflow-hidden">
+            <Card className="flex-1 flex flex-col min-h-0 border-border/50 shadow-soft-lg overflow-hidden backdrop-blur-sm bg-card/80">
                 <CardHeader className="border-b bg-muted/30 py-3">
                     <CardTitle className="text-sm font-medium flex items-center gap-2">
                         <Sparkles className="w-4 h-4 text-primary" />
-                        ChatGPT-Powered Knowledge Engine
+                        Cognitive Knowledge Engine v4.0
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-hidden p-0 flex flex-col">
@@ -132,18 +157,18 @@ export default function AiAssistantPage() {
 
                     <div className="p-4 md:p-6 border-t bg-card">
                         {chatHistory?.length === 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Explain Photosynthesis in detail")} className="justify-start text-xs h-auto py-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 animate-in slide-in-from-bottom-5 duration-700">
+                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Explain Photosynthesis in detail")} className="justify-start text-xs h-auto py-2 hover:border-primary/50">
                                     "Explain Photosynthesis in detail"
                                 </Button>
-                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Give me a study plan for Quantum Physics")} className="justify-start text-xs h-auto py-2">
+                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Give me a study plan for Quantum Physics")} className="justify-start text-xs h-auto py-2 hover:border-primary/50">
                                     "Give me a study plan for Quantum Physics"
                                 </Button>
-                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Generate an MCQ on DNA")} className="justify-start text-xs h-auto py-2 border-primary/30 text-primary">
+                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Generate an MCQ on DNA")} className="justify-start text-xs h-auto py-2 border-primary/30 text-primary hover:bg-primary/5">
                                     <Sparkles className="w-3 h-3 mr-2" />
                                     "Generate an MCQ on DNA"
                                 </Button>
-                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Quiz me on Newton's Laws")} className="justify-start text-xs h-auto py-2 border-primary/30 text-primary">
+                                <Button variant="outline" size="sm" onClick={() => handleSuggest("Quiz me on Newton's Laws")} className="justify-start text-xs h-auto py-2 border-primary/30 text-primary hover:bg-primary/5">
                                     <Sparkles className="w-3 h-3 mr-2" />
                                     "Quiz me on Newton's Laws"
                                 </Button>
@@ -151,19 +176,37 @@ export default function AiAssistantPage() {
                         )}
 
                         <form onSubmit={handleSendMessage} className="flex gap-2">
-                            <Textarea
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                placeholder="Ask your academic query (e.g., Explain Newton's laws with examples)..."
-                                className="resize-none min-h-[60px] max-h-[150px] bg-muted/50 focus:bg-background transition-all"
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && !e.shiftKey) {
-                                        e.preventDefault();
-                                        handleSendMessage();
-                                    }
-                                }}
-                            />
-                            <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className="h-auto px-4">
+                            <div className="relative flex-1">
+                                <Textarea
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Ask your academic query..."
+                                    className="resize-none min-h-[60px] max-h-[150px] bg-muted/50 focus:bg-background transition-all pr-12"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleSendMessage();
+                                        }
+                                    }}
+                                />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    className={cn(
+                                        "absolute right-2 bottom-2 h-8 w-8 rounded-full",
+                                        isListening && "text-primary bg-primary/10 animate-pulse"
+                                    )}
+                                    onClick={startListening}
+                                >
+                                    <div className={cn(
+                                        "w-2 h-2 rounded-full bg-primary absolute -top-1 -right-1",
+                                        !isListening && "hidden"
+                                    )} />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                                </Button>
+                            </div>
+                            <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className="h-auto px-4 shadow-lg shadow-primary/20">
                                 {isLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
                                 ) : (

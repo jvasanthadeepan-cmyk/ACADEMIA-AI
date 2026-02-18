@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 
 interface InternetIdentityContextType {
     identity: any | null;
-    login: (userName?: string) => void;
+    login: (userName?: string, email?: string) => void;
     logout: () => void;
     isInitializing: boolean;
 }
@@ -24,8 +24,13 @@ export const InternetIdentityProvider = ({ children }: { children: ReactNode }) 
     useEffect(() => {
         const init = async () => {
             const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-            if (isAuthenticated) {
-                setIdentity({ getPrincipal: () => ({ toText: () => 'mock-principal' }) });
+            const email = localStorage.getItem('userEmail');
+            if (isAuthenticated && email) {
+                setIdentity({
+                    getPrincipal: () => ({
+                        toText: () => `mock-principal-${btoa(email).slice(0, 8)}`
+                    })
+                });
             } else {
                 setIdentity(null);
             }
@@ -34,19 +39,25 @@ export const InternetIdentityProvider = ({ children }: { children: ReactNode }) 
         init();
     }, []);
 
-    const login = (userName?: string) => {
+    const login = (userName?: string, email?: string) => {
         if (userName) localStorage.setItem('userName', userName);
+        if (email) localStorage.setItem('userEmail', email);
         localStorage.setItem('isAuthenticated', 'true');
-        setIdentity({ getPrincipal: () => ({ toText: () => 'mock-principal' }) });
+        const finalEmail = email || 'guest';
+        setIdentity({
+            getPrincipal: () => ({
+                toText: () => `mock-principal-${btoa(finalEmail).slice(0, 8)}`
+            })
+        });
     };
 
     const logout = () => {
-        const email = localStorage.getItem('currentUserEmail');
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('userEmail');
         localStorage.removeItem('currentUserEmail');
         localStorage.removeItem('userName');
         localStorage.removeItem('userPlan');
+        localStorage.removeItem('chatHistory');
         setIdentity(null);
     };
 

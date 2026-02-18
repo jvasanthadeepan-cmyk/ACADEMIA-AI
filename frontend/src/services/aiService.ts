@@ -93,6 +93,58 @@ async function fetchExternalKnowledge(query: string): Promise<string> {
     return "No live data found, using internal knowledge base.";
 }
 
+export async function analyzeContent(content: string): Promise<{
+    summary: string;
+    keyConcepts: string[];
+    questions: string[];
+    studyPlan: string;
+}> {
+    try {
+        const prompt = `[INST] Analyze this study material: "${content.slice(0, 2000)}".
+        Provide:
+        1. Brief Summary
+        2. 5 Key Concepts (list)
+        3. 3 Potential Exam Questions
+        4. Suggested 3-day study plan.
+        FORMAT: Return strictly as JSON. [/INST]`;
+
+        const response = await fetch(AI_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${AI_API_KEY}`,
+            },
+            body: JSON.stringify({
+                inputs: prompt,
+                parameters: { max_new_tokens: 1000, temperature: 0.5 }
+            }),
+        });
+
+        const data = await response.json();
+        let text = "";
+        if (Array.isArray(data)) text = data[0]?.generated_text || "";
+        else text = data.generated_text || "";
+
+        if (text.includes('[/INST]')) text = text.split('[/INST]')[1].trim();
+
+        // Simple extraction if JSON fails
+        const summary = text.split('1.')[1]?.split('2.')[0]?.trim() || "Summary extraction failed.";
+        const concepts = text.split('2.')[1]?.split('3.')[0]?.trim().split('\n').filter(l => l.length > 2) || [];
+        const questions = text.split('3.')[1]?.split('4.')[0]?.trim().split('\n').filter(l => l.length > 2) || [];
+        const plan = text.split('4.')[1]?.trim() || "Plan extraction failed.";
+
+        return { summary, keyConcepts: concepts, questions, studyPlan: plan };
+    } catch (error) {
+        console.error("Analysis failed:", error);
+        return {
+            summary: "Content too complex for current model. Try a smaller snippet.",
+            keyConcepts: ["Check for headings", "Look for bold terms", "Identify formulas"],
+            questions: ["What is the main theme?", "How does this relate to previous topics?"],
+            studyPlan: "Day 1: Read and highlight. Day 2: Summarize. Day 3: Practice problems."
+        };
+    }
+}
+
 function generateMockMCQ(topic: string): string {
     const t = topic.toLowerCase();
 

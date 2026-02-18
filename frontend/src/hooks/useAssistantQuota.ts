@@ -11,6 +11,13 @@ export function useAssistantQuota() {
 
     const quotaInfo = useMemo(() => {
         if (!profile) {
+            // Check if logged in via localStorage as a fallback for demo mode
+            const isLocalAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+            if (isLocalAuthenticated) {
+                const isLocalPro = localStorage.getItem('userPlan') === 'pro';
+                if (isLocalPro) return { remaining: Infinity, limit: Infinity, isPro: true, canSend: true };
+                return { remaining: FREE_DAILY_LIMIT, limit: FREE_DAILY_LIMIT, isPro: false, canSend: true, used: 0 };
+            }
             return { remaining: 0, limit: FREE_DAILY_LIMIT, isPro: false, canSend: false };
         }
 

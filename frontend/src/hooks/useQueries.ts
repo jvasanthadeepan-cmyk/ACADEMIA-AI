@@ -85,9 +85,9 @@ export function useUpdateStudyTask() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ index, task }: { index: number; task: StudyTask }) => {
+        mutationFn: async ({ id, task }: { id: bigint; task: StudyTask }) => {
             if (!actor) throw new Error('Actor not available');
-            return actor.updateStudyTask(BigInt(index), task);
+            return actor.updateStudyTask(id, task);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['studyTasks'] });
@@ -102,9 +102,9 @@ export function useDeleteStudyTask() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (index: number) => {
+        mutationFn: async (id: bigint) => {
             if (!actor) throw new Error('Actor not available');
-            return actor.deleteStudyTask(BigInt(index));
+            return actor.deleteStudyTask(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['studyTasks'] });

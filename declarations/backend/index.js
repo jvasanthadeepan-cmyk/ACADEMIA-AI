@@ -22,13 +22,28 @@ export const TaskStatus = {
 export const canisterId = "rrkah-fqaaa-aaaaa-aaaaa-cai";
 
 export const createActor = (canisterId, options) => {
-    const dummyTasks = [
-        { id: 1n, subject: "Math", topic: "Calculus", deadline: "2023-12-31", status: "completed" },
-        { id: 2n, subject: "Physics", topic: "Mechanics", deadline: "2023-12-31", status: "pending" },
-        { id: 3n, subject: "CS", topic: "Algorithms", deadline: "2023-12-31", status: "completed" },
-        { id: 4n, subject: "Math", topic: "Algebra", deadline: "2023-12-31", status: "pending" },
-        { id: 5n, subject: "History", topic: "World War II", deadline: "2023-12-31", status: "pending" },
-    ];
+    // Helper to get tasks from localStorage
+    const getTasks = () => {
+        const tasks = localStorage.getItem('app_tasks');
+        if (!tasks) {
+            const defaults = [
+                { id: 1n, subject: "Math", topic: "Calculus", deadline: "2023-12-31", status: "completed" },
+                { id: 2n, subject: "Physics", topic: "Mechanics", deadline: "2023-12-31", status: "pending" },
+                { id: 3n, subject: "CS", topic: "Algorithms", deadline: "2023-12-31", status: "completed" },
+                { id: 4n, subject: "Math", topic: "Algebra", deadline: "2023-12-31", status: "pending" },
+                { id: 5n, subject: "History", topic: "World War II", deadline: "2023-12-31", status: "pending" },
+            ];
+            const store = defaults.map(t => ({ ...t, id: t.id.toString() }));
+            localStorage.setItem('app_tasks', JSON.stringify(store));
+            return defaults;
+        }
+        return JSON.parse(tasks).map(t => ({ ...t, id: BigInt(t.id) }));
+    };
+
+    const saveTasks = (tasks) => {
+        const store = tasks.map(t => ({ ...t, id: t.id.toString() }));
+        localStorage.setItem('app_tasks', JSON.stringify(store));
+    };
 
     // Helper to get users from localStorage
     const getUsers = () => {
@@ -91,32 +106,54 @@ export const createActor = (canisterId, options) => {
         },
 
         // CORE FEATURES
-        getStudyTasks: async () => dummyTasks,
+        getStudyTasks: async () => getTasks(),
         addStudyTask: async (task) => {
-            dummyTasks.push({ ...task, id: BigInt(Date.now()) });
+            const tasks = getTasks();
+            tasks.push({ ...task, id: BigInt(Date.now()) });
+            saveTasks(tasks);
             return { success: true };
         },
         updateStudyTask: async (id, task) => {
-            const index = dummyTasks.findIndex((t) => t.id === id);
-            if (index !== -1) dummyTasks[index] = { ...task, id };
+            const tasks = getTasks();
+            const index = tasks.findIndex((t) => t.id === id);
+            if (index !== -1) {
+                tasks[index] = { ...task, id };
+                saveTasks(tasks);
+            }
             return { success: true };
         },
         deleteStudyTask: async (id) => {
-            const index = dummyTasks.findIndex((t) => t.id === id);
-            if (index !== -1) dummyTasks.splice(index, 1);
+            const tasks = getTasks();
+            const index = tasks.findIndex((t) => t.id === id);
+            if (index !== -1) {
+                tasks.splice(index, 1);
+                saveTasks(tasks);
+            }
             return { success: true };
         },
-        getDashboardData: async () => ({
-            totalTasks: 5,
-            completedTasks: 2,
-            studyHours: 12.5,
-            streak: 3
-        }),
-        getTaskSummary: async () => ({
-            totalTasks: 5,
-            completedTasks: 2,
-            completionPercentage: 40.0
-        }),
+        getDashboardData: async () => {
+            const tasks = getTasks();
+            const completed = tasks.filter(t => t.status === 'completed').length;
+            const email = localStorage.getItem('currentUserEmail');
+            const users = getUsers();
+            const profile = users[email]?.profile || { fullName: 'Student' };
+            return {
+                totalTasks: tasks.length,
+                completedTasks: completed,
+                studyHours: 12.5,
+                streak: 3,
+                profile
+            };
+        },
+        getTaskSummary: async () => {
+            const tasks = getTasks();
+            const completed = tasks.filter(t => t.status === 'completed').length;
+            return {
+                totalTasks: tasks.length,
+                completedTasks: completed,
+                completionPercentage: tasks.length > 0 ? (completed / tasks.length) * 100 : 0
+            };
+        },
         getChatHistory: async () => {
             try {
                 const email = localStorage.getItem('currentUserEmail');

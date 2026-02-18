@@ -27,11 +27,15 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
         return tasks.filter((t) => t.subject === filterSubject);
     }, [tasks, filterSubject]);
 
-    const handleToggleComplete = async (index: number, task: StudyTask) => {
+    const handleToggleComplete = async (task: StudyTask) => {
+        if (task.id === undefined) {
+            toast.error('Task ID missing');
+            return;
+        }
         try {
             const newStatus = task.status === TaskStatus.completed ? TaskStatus.pending : TaskStatus.completed;
             await updateTask.mutateAsync({
-                index,
+                id: task.id,
                 task: { ...task, status: newStatus },
             });
             toast.success(newStatus === TaskStatus.completed ? 'Task completed!' : 'Task marked as pending');
@@ -41,9 +45,13 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
         }
     };
 
-    const handleDelete = async (index: number) => {
+    const handleDelete = async (id: bigint | undefined) => {
+        if (id === undefined) {
+            toast.error('Task ID missing');
+            return;
+        }
         try {
-            await deleteTask.mutateAsync(index);
+            await deleteTask.mutateAsync(id);
             toast.success('Task deleted');
         } catch (error) {
             toast.error('Failed to delete task');
@@ -75,7 +83,6 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
             ) : (
                 <div className="space-y-2">
                     {filteredTasks.map((task, idx) => {
-                        const actualIndex = tasks.indexOf(task);
                         return (
                             <div
                                 key={idx}
@@ -83,7 +90,7 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
                             >
                                 <Checkbox
                                     checked={task.status === TaskStatus.completed}
-                                    onCheckedChange={() => handleToggleComplete(actualIndex, task)}
+                                    onCheckedChange={() => handleToggleComplete(task)}
                                 />
                                 <div className="flex-1 min-w-0">
                                     <p className={`font-medium ${task.status === TaskStatus.completed ? 'line-through text-muted-foreground' : ''}`}>
@@ -104,7 +111,7 @@ export default function TaskListView({ tasks }: TaskListViewProps) {
                                         })()}
                                     </p>
                                 </div>
-                                <Button variant="ghost" size="icon" onClick={() => handleDelete(actualIndex)}>
+                                <Button variant="ghost" size="icon" onClick={() => handleDelete(task.id)}>
                                     <Trash2 className="w-4 h-4 text-destructive" />
                                 </Button>
                             </div>

@@ -2,9 +2,10 @@ import { useGetDashboardData, useGetStudyTasks, useGetTaskSummary } from '../../
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CheckCircle2, Clock, TrendingUp, Calendar } from 'lucide-react';
+import { CheckCircle2, Clock, TrendingUp, Calendar, Sparkles } from 'lucide-react';
 import QuickAskCard from '../../components/assistant/QuickAskCard';
 import WeeklyProductivityMiniChart from '../../components/charts/WeeklyProductivityMiniChart';
+import ThreeHero from '../../components/ui/ThreeHero';
 import { useMemo } from 'react';
 
 export default function DashboardPage() {
@@ -82,10 +83,21 @@ export default function DashboardPage() {
 
     return (
         <div className="space-y-6 animate-fade-in">
-            <div>
-                <h1 className="text-3xl font-bold">Dashboard</h1>
-                <p className="text-muted-foreground">Welcome back, {dashboardData?.profile?.fullName || 'Student'}!</p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold">Dashboard</h1>
+                    <p className="text-muted-foreground flex items-center gap-2">
+                        Welcome back, {dashboardData?.profile?.fullName || 'Student'}!
+                        <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                    </p>
+                </div>
+                <div className="hidden md:block text-right">
+                    <p className="text-sm font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+                    <p className="text-xs text-muted-foreground">Neuro-rhythmic study cycle: Active</p>
+                </div>
             </div>
+
+            <ThreeHero />
 
             {/* Stats Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
