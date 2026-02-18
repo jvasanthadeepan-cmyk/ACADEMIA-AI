@@ -14,14 +14,21 @@ export default function DashboardPage() {
 
     const todayTasks = useMemo(() => {
         if (!tasks) return [];
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const todayEnd = new Date(todayStart);
+        todayEnd.setHours(23, 59, 59, 999);
 
         return tasks.filter((task) => {
-            const taskDate = new Date(Number(task.deadline) / 1_000_000);
-            return taskDate >= today && taskDate < tomorrow;
+            const d = task.deadline;
+            if (!d) return false;
+            let taskDate: Date;
+            if (/^\d+$/.test(d.toString())) {
+                taskDate = new Date(Number(d) / 1_000_000);
+            } else {
+                taskDate = new Date(d);
+            }
+            return taskDate >= todayStart && taskDate <= todayEnd;
         });
     }, [tasks]);
 
@@ -32,10 +39,20 @@ export default function DashboardPage() {
 
         return tasks
             .filter((task) => {
-                const taskTime = Number(task.deadline) / 1_000_000;
+                const d = task.deadline;
+                if (!d) return false;
+                let taskTime: number;
+                if (/^\d+$/.test(d.toString())) {
+                    taskTime = Number(d) / 1_000_000;
+                } else {
+                    taskTime = new Date(d).getTime();
+                }
                 return taskTime > now && taskTime < now + twoWeeks;
             })
-            .sort((a, b) => Number(a.deadline) - Number(b.deadline))
+            .sort((a, b) => {
+                const getTime = (d: string) => /^\d+$/.test(d) ? Number(d) / 1_000_000 : new Date(d).getTime();
+                return getTime(a.deadline) - getTime(b.deadline);
+            })
             .slice(0, 5);
     }, [tasks]);
 
@@ -133,9 +150,8 @@ export default function DashboardPage() {
                                 {todayTasks.map((task, idx) => (
                                     <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-accent/50">
                                         <CheckCircle2
-                                            className={`w-5 h-5 mt-0.5 ${
-                                                task.status === 'completed' ? 'text-primary' : 'text-muted-foreground'
-                                            }`}
+                                            className={`w-5 h-5 mt-0.5 ${task.status === 'completed' ? 'text-primary' : 'text-muted-foreground'
+                                                }`}
                                         />
                                         <div className="flex-1 min-w-0">
                                             <p className="font-medium text-sm">{task.topic}</p>
@@ -165,7 +181,14 @@ export default function DashboardPage() {
                                         <div className="flex-1 min-w-0">
                                             <p className="font-medium text-sm">{task.topic}</p>
                                             <p className="text-xs text-muted-foreground">
-                                                {new Date(Number(task.deadline) / 1_000_000).toLocaleDateString()}
+                                                {(() => {
+                                                    const d = task.deadline;
+                                                    if (!d) return 'No date';
+                                                    if (/^\d+$/.test(d.toString())) {
+                                                        return new Date(Number(d) / 1_000_000).toLocaleDateString();
+                                                    }
+                                                    return new Date(d).toLocaleDateString();
+                                                })()}
                                             </p>
                                         </div>
                                     </div>

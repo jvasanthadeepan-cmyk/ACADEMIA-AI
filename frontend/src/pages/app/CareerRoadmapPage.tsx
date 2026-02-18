@@ -45,7 +45,12 @@ export default function CareerRoadmapPage() {
 
     const handleReset = async () => {
         try {
-            localStorage.removeItem('careerRoadmap');
+            const email = localStorage.getItem('currentUserEmail');
+            if (email) {
+                localStorage.removeItem(`careerRoadmap_${email}`);
+            } else {
+                localStorage.removeItem('careerRoadmap');
+            }
             await refetch();
             toast.success('Roadmap reset');
         } catch (error) {

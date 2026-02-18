@@ -17,6 +17,7 @@ import { useInternetIdentity } from '../../hooks/useInternetIdentity';
 const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/app/dashboard' },
     { icon: Library, label: 'Flashcards', path: '/app/flashcards' },
+    { icon: PieChart, label: 'Analytics', path: '/app/analytics' },
     { icon: Calendar, label: 'Study Planner', path: '/app/study-planner' },
     { icon: MessageSquare, label: 'AI Assistant', path: '/app/ai-assistant' },
     { icon: Target, label: 'Career Roadmap', path: '/app/career-roadmap' },

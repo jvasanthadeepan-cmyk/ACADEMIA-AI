@@ -43,8 +43,8 @@ export default function PomodoroTimer() {
     const handleComplete = async () => {
         try {
             await addSession.mutateAsync({
-                duration: BigInt(POMODORO_MINUTES),
-                date: BigInt(Date.now() * 1_000_000),
+                durationMinutes: POMODORO_MINUTES,
+                timestamp: (BigInt(Date.now()) * BigInt(1_000_000)).toString(),
             });
             toast.success('Pomodoro completed! Great work! 🎉');
         } catch (error) {

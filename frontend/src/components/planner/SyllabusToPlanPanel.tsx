@@ -46,7 +46,7 @@ export default function SyllabusToPlanPanel({ open, onOpenChange }: SyllabusToPl
                 await addTask.mutateAsync({
                     subject,
                     topic: task.topic,
-                    deadline: BigInt(task.deadline.getTime() * 1_000_000),
+                    deadline: (BigInt(task.deadline.getTime()) * BigInt(1_000_000)).toString(),
                     status: TaskStatus.pending,
                 });
             }

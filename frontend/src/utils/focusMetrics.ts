@@ -12,10 +12,10 @@ export function calculateFocusMetrics(sessions: FocusSession[]): {
     // Calculate daily score (today's minutes)
     const todayMinutes = sessions
         .filter((s) => {
-            const sessionTime = Number(s.date) / 1_000_000;
+            const sessionTime = Number(s.timestamp) / 1_000_000;
             return sessionTime >= todayStart && sessionTime <= todayEnd;
         })
-        .reduce((sum, s) => sum + Number(s.duration), 0);
+        .reduce((sum, s) => sum + s.durationMinutes, 0);
 
     const targetMinutes = 120; // 2 hours daily target
     const dailyScore = Math.min(100, Math.round((todayMinutes / targetMinutes) * 100));
@@ -30,7 +30,7 @@ export function calculateFocusMetrics(sessions: FocusSession[]): {
         const dayEnd = new Date(checkDate).setHours(23, 59, 59, 999);
 
         const hasSession = sessions.some((s) => {
-            const sessionTime = Number(s.date) / 1_000_000;
+            const sessionTime = Number(s.timestamp) / 1_000_000;
             return sessionTime >= dayStart && sessionTime <= dayEnd;
         });
 
@@ -52,10 +52,10 @@ export function calculateFocusMetrics(sessions: FocusSession[]): {
 
     const totalMinutes = sessions
         .filter((s) => {
-            const sessionTime = Number(s.date) / 1_000_000;
+            const sessionTime = Number(s.timestamp) / 1_000_000;
             return sessionTime >= weekStart.getTime();
         })
-        .reduce((sum, s) => sum + Number(s.duration), 0);
+        .reduce((sum, s) => sum + s.durationMinutes, 0);
 
     return { dailyScore, streak, totalMinutes };
 }

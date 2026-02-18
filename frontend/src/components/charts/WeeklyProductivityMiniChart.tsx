@@ -23,10 +23,10 @@ export default function WeeklyProductivityMiniChart() {
 
             const dayMinutes = (sessions || [])
                 .filter((s) => {
-                    const sessionTime = Number(s.date) / 1_000_000;
+                    const sessionTime = Number(s.timestamp) / 1_000_000;
                     return sessionTime >= date.getTime() && sessionTime < nextDay.getTime();
                 })
-                .reduce((sum, s) => sum + Number(s.duration), 0);
+                .reduce((sum, s) => sum + s.durationMinutes, 0);
 
             data.push({
                 day: days[date.getDay()],
